@@ -1,6 +1,7 @@
 ---
 name: Test
 on:
+  create:
   pull_request:
   push:
     branches:

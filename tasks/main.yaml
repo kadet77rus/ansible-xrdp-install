@@ -22,7 +22,7 @@
   user:
     name: "{{ item.username }}"
     group: "{{ item.usergroup }}"
-    password: "{{ item.userpass | password_hash('sha512') }}"
+    password: "{{ item.userpass | password_hash('sha512', 'mySecretSalt') }}"
     shell: /bin/bash
     skeleton: /etc/skel
   loop: "{{ xrdp_users }}"
