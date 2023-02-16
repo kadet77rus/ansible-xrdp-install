@@ -25,6 +25,7 @@
     password: "{{ item.userpass | password_hash('sha512') }}"
     shell: /bin/bash
     skeleton: /etc/skel
+  loop: "{{ xrdp_users }}"
 
 - name: Create xsession file
   copy:
