@@ -27,3 +27,27 @@ jobs:
           set -e
           yamllint .
           ansible-lint .
+
+  molecule:
+    name: molecule
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro: debian10
+            playbook: converge.yml
+          - distro: ubuntu1804
+            playbook: converge.yml
+          - distro: ubuntu2004
+            playbook: converge.yml
+    steps:
+      - name: Checkout the codebase
+        uses: actions/checkout@v3
+      - name: Molecule
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_command: test
+          molecule_args: -d docker
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
