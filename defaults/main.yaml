@@ -1,0 +1,6 @@
+---
+xrdp_users:
+  - username: 'admin'
+    usergroup: 'admin'
+    userpass: 'admin'
+    userstate: 'present'

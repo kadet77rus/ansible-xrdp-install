@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include kadet77rus.xrdp"
+      include_role:
+        name: "kadet77rus.xrdp"

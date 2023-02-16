@@ -1,0 +1,29 @@
+---
+name: Test
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the codebase
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install yamllint ansible-lint ansible
+
+      - name: Lint code.
+        run: |
+          set -e
+          yamllint .
+          ansible-lint .

@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: xrdp
+  author: kadet77rus
+  description: XRDP Installer
+  license: MIT
+  min_ansible_version: "2.4"
+  platforms:
+    - name: Debian
+      versions:
+        - "buster"
+    - name: Ubuntu
+      versions:
+        - "bionic"
+        - "focal"
+  galaxy_tags:
+    - xrdp
+    - system
+    - development
+dependencies: []

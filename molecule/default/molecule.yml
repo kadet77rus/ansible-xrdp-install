@@ -1,0 +1,16 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: debian
+    image: debian:buster-slim
+  - name: ubuntu_18.04
+    image: ubuntu:18.04
+  - name: ubuntu_20.04
+    image: ubuntu:20.04
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
