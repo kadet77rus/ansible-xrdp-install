@@ -18,25 +18,20 @@
     state: present
   loop: "{{ xrdp_users }}"
 
+- name: Create xrdp users
+  user:
+    name: "{{ item.username }}"
+    group: "{{ item.usergroup }}"
+    password: "{{ item.userpass | password_hash('sha512') }}"
+    shell: /bin/bash
+    skeleton: /etc/skel
 
-- name: Create xrdp users and files
+- name: Create xsession file
+  copy:
+    dest: "/home/{{ item.username }}/.xsession"
+    content: "xfce4-session"
+    owner: "{{ item.username }}"
+    group: "{{ item.usergroup }}"
+    mode: '0755'
   loop: "{{ xrdp_users }}"
-  when: item.userstate != 'absent'
   notify: Restart xrdp
-  block:
-    - name: Create xrdp users
-      user:
-        name: "{{ item.username }}"
-        group: "{{ item.usergroup }}"
-        password: "{{ item.userpass | password_hash('sha512') }}"
-        state: "{{ item.userstate }}"
-        shell: /bin/bash
-        skeleton: /etc/skel
-
-    - name: Create xsession file
-      copy:
-        dest: "/home/{{ item.username }}/.xsession"
-        content: "xfce4-session"
-        owner: "{{ item.username }}"
-        group: "{{ ite.usergroup }}"
-        mode: '0755'
