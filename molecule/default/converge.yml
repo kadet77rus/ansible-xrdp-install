@@ -2,6 +2,11 @@
 - name: Converge
   hosts: all
   pre_tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 600
+
     - name: Wait for systemd to complete initialization.  # noqa command-instead-of-module
       ansible.builtin.command: systemctl is-system-running
       register: systemctl_status
