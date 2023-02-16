@@ -1,7 +1,9 @@
 ---
 - name: Install XRDP
   apt:
-    name: xrdp
+    name:
+      - xfce4
+      - xrdp
     state: present
     update_cache: true
 
@@ -23,9 +25,19 @@
     name: "{{ item.username }}"
     group: "{{ item.usergroup }}"
     password: "{{ item.userpass | password_hash('sha512', 'mySecretSalt') }}"
+    state: present
     shell: /bin/bash
     skeleton: /etc/skel
   loop: "{{ xrdp_users }}"
+  when: item.userstate is defined and item.userstate != "absent"
+
+- name: Remove xrdp users
+  user:
+    name: "{{ item.username }}"
+    state: absent
+    remove: true
+  loop: "{{ xrdp_users }}"
+  when: item.userstate is not defined or item.userstate == "absent"
 
 - name: Create xsession file
   copy:
@@ -35,4 +47,22 @@
     group: "{{ item.usergroup }}"
     mode: '0755'
   loop: "{{ xrdp_users }}"
+  when: item.userstate is defined and item.userstate != "absent"
   notify: Restart xrdp
+
+- name: Add user to sudoers
+  community.general.sudoers:
+    name: "{{ item.username }}"
+    state: present
+    user: "{{ item.username }}"
+    commands: ALL
+  loop: "{{ xrdp_users }}"
+  when: (item.userstate is defined and item.userstate != "absent") and (item.usersudo is defined and item.usersudo != "false")
+
+- name: Remove user from sudoers
+  community.general.sudoers:
+    name: "{{ item.username }}"
+    state: absent
+    user: "{{ item.username }}"
+  loop: "{{ xrdp_users }}"
+  when: (item.userstate is not defined or item.userstate == "absent") or (item.usersudo is not defined or item.usersudo == "false")

@@ -1,5 +1,15 @@
 ---
 xrdp_users:
-  - username: 'admin'
+  - username: 'admin'  # Create user with sudo
     usergroup: 'admin'
     userpass: 'admin'
+    userstate: 'present'
+    usersudo: true
+  - username: 'test'  # Create user  without sudo
+    usergroup: 'test'
+    userpass: 'test'
+    userstate: 'present'
+  - username: 'delete'  # Delete user
+    usergroup: 'delete'
+    userpass: 'delete'
+    usersudo: true
