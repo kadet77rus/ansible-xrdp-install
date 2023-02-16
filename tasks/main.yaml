@@ -2,8 +2,8 @@
 - name: Install XRDP
   apt:
     name:
-    - xfce4
-    - xrdp
+      - xfce4
+      - xrdp
     state: present
     update_cache: true
 
