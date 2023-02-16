@@ -42,12 +42,21 @@ jobs:
           - distro: ubuntu2004
             playbook: converge.yml
     steps:
-      - name: Checkout the codebase
+      - name: Check out the codebase.
         uses: actions/checkout@v3
-      - name: Molecule
-        uses: gofrolist/molecule-action@v2
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v3
         with:
-          molecule_command: test
-          molecule_args: -d docker
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible ansible-lint molecule[docker] docker
+
+      - name: Run Molecule tests.
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
           MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
